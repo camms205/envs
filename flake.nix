@@ -17,17 +17,25 @@
         toolchain = fenix.packages.${system}.stable;
       in
       {
-        devShells.rust = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            (toolchain.withComponents [
-              "cargo"
-              "clippy"
-              "rust-src"
-              "rustc"
-              "rustfmt"
-            ])
-            rust-analyzer
-          ];
+        devShells = {
+          cpp = pkgs.mkShell {
+            packages = with pkgs; [
+              cmake
+              clang-tools
+            ];
+          };
+          rust = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              (toolchain.withComponents [
+                "cargo"
+                "clippy"
+                "rust-src"
+                "rustc"
+                "rustfmt"
+              ])
+              rust-analyzer
+            ];
+          };
         };
       }
     );
