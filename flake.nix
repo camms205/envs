@@ -34,8 +34,11 @@
                 "rustfmt"
               ])
               rust-analyzer
+              wayland
+              wayland-protocol
+            ];
+            nativeBuildInputs = with pkgs; [
               pkg-config
-              dbus
             ];
           };
         };
