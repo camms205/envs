@@ -15,6 +15,14 @@
           inherit system overlays;
         };
         toolchain = fenix.packages.${system}.stable;
+        rustToolchain =
+          (toolchain.withComponents [
+            "cargo"
+            "clippy"
+            "rust-src"
+            "rustc"
+            "rustfmt"
+          ]);
       in
       {
         devShells = {
@@ -26,18 +34,22 @@
           };
           rust = pkgs.mkShell {
             buildInputs = with pkgs; [
-              (toolchain.withComponents [
-                "cargo"
-                "clippy"
-                "rust-src"
-                "rustc"
-                "rustfmt"
-              ])
+              rustToolchain
               rust-analyzer
+            ];
+          };
+          bevy = pkgs.mkShell rec {
+            buildInputs = with pkgs; [
+              rustToolchain
+              rust-analyzer
+              udev alsa-lib vulkan-loader
+              libxkbcommon wayland # wayland feature
+              # xorg.libX11 xorg.libXcursor xorg.libXi xorg.libXrandr # x11 feature
             ];
             nativeBuildInputs = with pkgs; [
               pkg-config
             ];
+            LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
           };
         };
       }
