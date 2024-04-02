@@ -25,7 +25,7 @@
             ];
           };
           rust = pkgs.mkShell {
-            buildInputs = with pkgs; [
+            packages = with pkgs; [
               (toolchain.withComponents [
                 "cargo"
                 "clippy"
@@ -34,6 +34,7 @@
                 "rustfmt"
               ])
               rust-analyzer
+              pkg-config
             ];
           };
         };
