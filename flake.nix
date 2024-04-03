@@ -6,8 +6,12 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    wgsl-analyzer = {
+      url = "github:wgsl-analyzer/wgsl-analyzer";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-  outputs = { self, nixpkgs, fenix, flake-utils }:
+  outputs = { self, nixpkgs, fenix, flake-utils, wgsl-analyzer }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         overlays = [ fenix.overlays.default ];
@@ -42,6 +46,7 @@
             buildInputs = with pkgs; [
               rustToolchain
               rust-analyzer
+              wgsl-analyzer.packages.${system}.default
               udev alsa-lib vulkan-loader
               libxkbcommon wayland # wayland feature
               # xorg.libX11 xorg.libXcursor xorg.libXi xorg.libXrandr # x11 feature
