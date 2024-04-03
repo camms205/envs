@@ -27,6 +27,11 @@
             "rustc"
             "rustfmt"
           ]);
+        rustDefaults = with pkgs; [
+          rustToolchain
+          rust-analyzer
+          bacon
+        ];
       in
       {
         devShells = {
@@ -37,20 +42,15 @@
             ];
           };
           rust = pkgs.mkShell {
-            buildInputs = with pkgs; [
-              rustToolchain
-              rust-analyzer
-            ];
+            buildInputs = with pkgs; [] ++ rustDefaults;
           };
           bevy = pkgs.mkShell rec {
             buildInputs = with pkgs; [
-              rustToolchain
-              rust-analyzer
               wgsl-analyzer.packages.${system}.default
               udev alsa-lib vulkan-loader
               libxkbcommon wayland # wayland feature
               # xorg.libX11 xorg.libXcursor xorg.libXi xorg.libXrandr # x11 feature
-            ];
+            ] ++ rustDefaults;
             nativeBuildInputs = with pkgs; [
               pkg-config
             ];
