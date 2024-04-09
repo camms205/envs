@@ -56,6 +56,14 @@
             ];
             LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
           };
+          ev3dev = pkgs.mkShell {
+            packages = with pkgs; [
+              (python3.withPackages (ps: [
+                ps.ev3dev2
+                ps.python-lsp-black
+              ]))
+            ];
+          };
         };
       }
     );
