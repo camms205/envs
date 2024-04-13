@@ -47,6 +47,8 @@
           bevy = pkgs.mkShell rec {
             buildInputs = with pkgs; [
               wgsl-analyzer.packages.${system}.default
+              mold-wrapped # faster linker
+              fontconfig
               udev alsa-lib vulkan-loader
               libxkbcommon wayland # wayland feature
               # xorg.libX11 xorg.libXcursor xorg.libXi xorg.libXrandr # x11 feature
