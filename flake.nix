@@ -66,6 +66,13 @@
               ]))
             ];
           };
+          python = pkgs.mkShell {
+            packages = with pkgs; [
+              (python3.withPackages (ps: [
+                ps.python-lsp-black
+              ]))
+            ];
+          };
         };
       }
     );
