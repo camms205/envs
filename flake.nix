@@ -70,7 +70,16 @@
             packages = with pkgs; [
               (python3.withPackages (ps: [
                 ps.python-lsp-black
-                ps.pip
+              ]))
+            ];
+          };
+          comfy = pkgs.mkShell {
+            packages = with pkgs; [
+              (python3.withPackages (ps: [
+                ps.python-lsp-black
+                ps.torch
+                ps.torchvision
+                ps.torchaudio
               ]))
             ];
           };
