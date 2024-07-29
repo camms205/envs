@@ -84,7 +84,7 @@
           comfyui = pkgs.mkShell rec {
             buildInputs = with pkgs; [
               git
-              python311
+              python310
               stdenv.cc.cc.lib
               stdenv.cc
               ncurses5
