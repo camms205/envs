@@ -81,6 +81,24 @@
               ]))
             ];
           };
+          comfyui = pkgs.mkShell rec {
+            buildInputs = with pkgs; [
+              git
+              python311
+              stdenv.cc.cc.lib
+              stdenv.cc
+              ncurses5
+              binutils
+              gitRepo gnupg autoconf curl
+              procps gnumake util-linux m4 gperf unzip
+              libGLU libGL
+              glib
+              # rocm packages for amd gpu
+              rocmPackages.rocm-runtime
+              pciutils
+            ];
+            LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
+          };
         };
       }
     );
