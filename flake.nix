@@ -51,7 +51,7 @@
               fontconfig
               udev alsa-lib vulkan-loader
               libxkbcommon wayland # wayland feature
-              # xorg.libX11 xorg.libXcursor xorg.libXi xorg.libXrandr # x11 feature
+              xorg.libX11 xorg.libXcursor xorg.libXi xorg.libXrandr # x11 feature
             ] ++ rustDefaults;
             nativeBuildInputs = with pkgs; [
               pkg-config
