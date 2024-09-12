@@ -3,7 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     fenix = {
-      url = "github:nix-community/fenix";
+      url = "github:nix-community/fenix/monthly";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     wgsl-analyzer = {
@@ -54,7 +54,7 @@
           };
           rust-windows =
             let
-              target = "x86_64-pc-windows-msvc";
+              target = "x86_64-pc-windows-gnu";
             in
             pkgs.mkShell {
               buildInputs = with pkgs; [
@@ -64,6 +64,8 @@
                 ])
                 rust-analyzer-nightly
                 bacon
+                pkgsCross.mingwW64.stdenv.cc
+                pkgsCross.mingwW64.windows.mingw_w64_pthreads
               ];
             };
           bevy = pkgs.mkShell rec {
