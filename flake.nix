@@ -11,27 +11,31 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, fenix, flake-utils, wgsl-analyzer }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      fenix,
+      flake-utils,
+      wgsl-analyzer,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         overlays = [ fenix.overlays.default ];
         pkgs = import nixpkgs {
           inherit system overlays;
         };
-        toolchain = fenix.packages.${system}.stable;
-        rustToolchain =
-          (toolchain.withComponents [
+        fenixSystem = fenix.packages.${system};
+        rustToolchain = (
+          fenixSystem.complete.withComponents [
             "cargo"
             "clippy"
             "rust-src"
             "rustc"
             "rustfmt"
-          ]);
-        rustDefaults = with pkgs; [
-          rustToolchain
-          rust-analyzer
-          bacon
-        ];
+          ]
+        );
       in
       {
         devShells = {
@@ -42,17 +46,43 @@
             ];
           };
           rust = pkgs.mkShell {
-            buildInputs = with pkgs; [] ++ rustDefaults;
+            buildInputs = with pkgs; [
+              rustToolchain
+              rust-analyzer-nightly
+              bacon
+            ];
           };
+          rust-windows =
+            let
+              target = "x86_64-pc-windows-msvc";
+            in
+            pkgs.mkShell {
+              buildInputs = with pkgs; [
+                (fenixSystem.combine [
+                  rustToolchain
+                  fenixSystem.targets.${target}.latest.rust-std
+                ])
+                rust-analyzer-nightly
+                bacon
+              ];
+            };
           bevy = pkgs.mkShell rec {
             buildInputs = with pkgs; [
               wgsl-analyzer.packages.${system}.default
               mold-wrapped # faster linker
               fontconfig
-              udev alsa-lib vulkan-loader
-              libxkbcommon wayland # wayland feature
-              xorg.libX11 xorg.libXcursor xorg.libXi xorg.libXrandr # x11 feature
-            ] ++ rustDefaults;
+              udev
+              alsa-lib
+              vulkan-loader
+              libxkbcommon
+              wayland # wayland feature
+              xorg.libX11
+              xorg.libXcursor
+              xorg.libXi
+              xorg.libXrandr # x11 feature
+              rustToolchain
+              rust-analyzer-nightly
+            ];
             nativeBuildInputs = with pkgs; [
               pkg-config
             ];
@@ -89,9 +119,18 @@
               stdenv.cc
               ncurses5
               binutils
-              gitRepo gnupg autoconf curl
-              procps gnumake util-linux m4 gperf unzip
-              libGLU libGL
+              gitRepo
+              gnupg
+              autoconf
+              curl
+              procps
+              gnumake
+              util-linux
+              m4
+              gperf
+              unzip
+              libGLU
+              libGL
               glib
               # rocm packages for amd gpu
               rocmPackages.rocm-runtime
