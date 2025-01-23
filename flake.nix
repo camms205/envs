@@ -43,7 +43,7 @@
           rust = pkgs.mkShell {
             buildInputs = with pkgs; [
               rustToolchain
-              rust-analyzer-nightly
+              rust-analyzer
               bacon
             ];
           };
@@ -57,7 +57,7 @@
                   rustToolchain
                   fenixSystem.targets.${target}.latest.rust-std
                 ])
-                rust-analyzer-nightly
+                rust-analyzer
                 bacon
                 pkgsCross.mingwW64.stdenv.cc
                 pkgsCross.mingwW64.windows.mingw_w64_pthreads
@@ -78,7 +78,7 @@
               xorg.libXi
               xorg.libXrandr # x11 feature
               rustToolchain
-              rust-analyzer-nightly
+              rust-analyzer
             ];
             nativeBuildInputs = with pkgs; [
               pkg-config
