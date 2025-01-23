@@ -6,10 +6,6 @@
       url = "github:nix-community/fenix/monthly";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    wgsl-analyzer = {
-      url = "github:wgsl-analyzer/wgsl-analyzer";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
   outputs =
     {
@@ -17,7 +13,6 @@
       nixpkgs,
       fenix,
       flake-utils,
-      wgsl-analyzer,
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
@@ -70,7 +65,7 @@
             };
           bevy = pkgs.mkShell rec {
             buildInputs = with pkgs; [
-              wgsl-analyzer.packages.${system}.default
+              wgsl-analyzer
               mold-wrapped # faster linker
               fontconfig
               udev
