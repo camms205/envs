@@ -45,6 +45,11 @@
               rustToolchain
               rust-analyzer
               bacon
+              pkg-config
+              dbus
+              openssl
+              udev
+              jack2
             ];
           };
           rust-windows =
