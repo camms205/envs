@@ -140,6 +140,12 @@
             ];
             LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
           };
+          zig = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              zig
+              zls
+            ];
+          };
         };
       }
     );
